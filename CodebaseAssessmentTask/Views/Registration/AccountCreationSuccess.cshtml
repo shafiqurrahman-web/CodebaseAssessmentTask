@@ -1,0 +1,27 @@
+@{
+    ViewData["Title"] = "Account Creation Success";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container position-relative" style="max-width: 430px; min-height: 100vh;">
+    <div class="pt-4 px-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 style="font-size: 1.8rem; font-weight: 700; color: #222;">Hello, @TempData["CustomerName"]</h1>
+            <!-- Placeholder for logo -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2L6 12h12L12 2ZM4 14l-2 3h8l2-3H4Zm14 0l2 3h-8l-2-3h8ZM12 22l2-3h-4l2 3Z" fill="#6200EE"/>
+            </svg>
+        </div>
+
+        <div class="card shadow-sm mb-4" style="border-radius: 16px;">
+            <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Personal Finance Image" style="border-top-left-radius: 16px; border-top-right-radius: 16px;">
+            <div class="card-body">
+                <div style="font-size: 0.8rem; font-weight: 600; color: #888; letter-spacing: 1px; margin-bottom: 0.5rem;">PERSONAL FINANCE</div>
+                <h5 class="card-title" style="font-weight: 700; color: #222;">Build your home. Together.</h5>
+                <p class="card-text" style="font-size: 0.9rem; color: #666;">Realize your dream with our exciting financing with competitive rates.</p>
+            </div>
+        </div>
+
+    </div>
+   
+</div> 

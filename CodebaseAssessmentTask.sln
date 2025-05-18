@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodebaseAssessmentTask", "CodebaseAssessmentTask\CodebaseAssessmentTask.csproj", "{2164F0E2-EA20-4C7D-B3BD-317536810C7B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2164F0E2-EA20-4C7D-B3BD-317536810C7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2164F0E2-EA20-4C7D-B3BD-317536810C7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2164F0E2-EA20-4C7D-B3BD-317536810C7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2164F0E2-EA20-4C7D-B3BD-317536810C7B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1CAE088E-429A-4953-8030-8DDD0A49F85F}
+	EndGlobalSection
+EndGlobal

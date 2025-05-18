@@ -1,0 +1,217 @@
+@model CodebaseAssessmentTask.Models.RegistrationVerifyOtpViewModel
+@{
+    ViewData["Title"] = "Verify OTP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var phoneNumber = Model.PhoneNumber;
+}
+
+<div class="alert alert-info text-center" style="margin-top: 1rem;">
+    <strong>Test OTP:</strong> @ViewBag.Otp
+</div>
+
+
+
+
+<div class="container position-relative" style="max-width: 430px; min-height: 100vh; padding-bottom: 120px;">
+    @if (ViewData.ModelState["Otp"] != null && ViewData.ModelState["Otp"].Errors.Count > 0)
+    {
+        <div style="background: #fff3f2; border-radius: 16px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+            <span style="color: #ff4d4f; font-size: 1.5rem; margin-top: 2px;">
+                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' viewBox='0 0 24 24'><circle cx='12' cy='12' r='10' fill='#fff3f2' /><path fill='#ff4d4f' d='M12 7a1 1 0 0 1 1 1v4a1 1 0 1 1-2 0V8a1 1 0 0 1 1-1Zm0 8a1.25 1.25 0 1 0 0-2.5A1.25 1.25 0 0 0 12 15Z' /></svg>
+            </span>
+            <div style="flex: 1;">
+                <div style="font-weight: 600; color: #ff4d4f;">Incorrect OTP</div>
+                <div style="color: #b23c3c; font-size: 1rem;">Please enter your OTP again</div>
+            </div>
+            <button type="button" onclick="this.parentElement.style.display='none'" style="background: none; border: none; font-size: 1.2rem; color: #b23c3c; cursor: pointer;">&times;</button>
+        </div>
+    }
+
+    <div class="pt-4 ps-2 d-flex align-items-center">
+        <a href="javascript:history.back()" style="text-decoration: none; font-size: 1.5rem; color: #222;">&#8592;</a>
+    </div>
+    <div class="mt-4 mb-2 px-2 text-center">
+        <div class="d-flex justify-content-center mb-3">
+            <div style="background: #f6f2fa; border-radius: 12px; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 2rem; color: #b14fc2;">
+                    @if (Model.IsEmailOtp)
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#fff"/><rect x="3" y="6" width="18" height="12" rx="2" stroke="#222" stroke-width="2"/><path d="M5 8l7 5 7-5" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    }
+                    else
+                    {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24"><path fill="#b14fc2" d="M17 2H7C5.343 2 4 3.343 4 5v14c0 1.657 1.343 3 3 3h10c1.657 0 3-1.343 3-3V5c0-1.657-1.343-3-3-3Zm1 17c0 .552-.448 1-1 1H7c-.552 0-1-.448-1-1V5c0-.552.448-1 1-1h10c.552 0 1 .448 1 1v14Zm-5-2a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" /></svg>
+                    }
+                </span>
+            </div>
+        </div>
+        <div class="mb-2" style="font-size: 1.1rem; color: #444; font-weight: 500;">
+            Enter 4-digit code sent to<br>
+            <span style="color: #b14fc2; font-weight: 600;">
+                @(Model.IsEmailOtp ? Model.Email : phoneNumber)
+            </span>
+        </div>
+        <form asp-action="@(Model.IsEmailOtp ? "VerifyEmailOtp" : "VerifyOtp")" method="post" id="otpForm" autocomplete="off">
+            <input type="hidden" name="PhoneNumber" value="@Model.PhoneNumber" />
+            <input type="hidden" name="ICNumber" value="@Model.ICNumber" />
+            <div class="d-flex justify-content-center gap-3 mb-4 mt-4">
+                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input" name="Otp1" autocomplete="one-time-code" value="@(Context.Request.Method == "POST" ? (Context.Request.Form["Otp1"].ToString() ?? "") : "")" />
+                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input" name="Otp2" autocomplete="one-time-code" value="@(Context.Request.Method == "POST" ? (Context.Request.Form["Otp2"].ToString() ?? "") : "")" />
+                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input" name="Otp3" autocomplete="one-time-code" value="@(Context.Request.Method == "POST" ? (Context.Request.Form["Otp3"].ToString() ?? "") : "")" />
+                <input type="text" maxlength="1" pattern="[0-9]*" inputmode="numeric" class="otp-input" name="Otp4" autocomplete="one-time-code" value="@(Context.Request.Method == "POST" ? (Context.Request.Form["Otp4"].ToString() ?? "") : "")" />
+            </div>
+            <div class="mb-4">
+                <button type="submit" class="btn verify-btn w-100" id="verifyBtn" disabled>VERIFY</button>
+            </div>
+            <div class="mb-2 text-end">
+                <button type="button" class="btn btn-link p-0" id="resendBtn" disabled style="color: #bdbdbd; font-weight: 600; font-size: 1rem;">RESEND <span id="timer">1:57</span></button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // OTP input focus and value handling
+    const otpInputs = document.querySelectorAll('.otp-input');
+    otpInputs.forEach((input, idx) => {
+        input.addEventListener('input', function(e) {
+            if (this.value.length === 1 && idx < otpInputs.length - 1) {
+                otpInputs[idx + 1].focus();
+            }
+            checkOtpFilled();
+        });
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace' && !this.value && idx > 0) {
+                otpInputs[idx - 1].focus();
+            }
+        });
+        // Handle paste event for each input
+        input.addEventListener('paste', function(e) {
+            const paste = (e.clipboardData || window.clipboardData).getData('text');
+            if (/^\d{4}$/.test(paste)) {
+                for (let i = 0; i < 4; i++) {
+                    otpInputs[i].value = paste[i];
+                }
+                otpInputs[3].focus();
+                checkOtpFilled();
+                e.preventDefault();
+            }
+        });
+    });
+    function checkOtpFilled() {
+        const filled = Array.from(otpInputs).every(i => i.value.length === 1);
+        document.getElementById('verifyBtn').disabled = !filled;
+        if (filled) {
+            document.getElementById('verifyBtn').style.background = '#b14fc2';
+            document.getElementById('verifyBtn').style.color = '#fff';
+        } else {
+            document.getElementById('verifyBtn').style.background = '#e5e1e7';
+            document.getElementById('verifyBtn').style.color = '#bdbdbd';
+        }
+    }
+    checkOtpFilled();
+
+    // Timer for resend
+    let timer = 11; // 1:59 in seconds
+    const timerSpan = document.getElementById('timer');
+    const resendBtn = document.getElementById('resendBtn');
+    function updateTimer() {
+        const min = Math.floor(timer / 60);
+        const sec = timer % 60;
+        timerSpan.textContent = `${min}:${sec.toString().padStart(2, '0')}`;
+        if (timer > 0) {
+            timer--;
+            setTimeout(updateTimer, 1000);
+        } else {
+            resendBtn.disabled = false;
+            resendBtn.style.color = '#b14fc2';
+            timerSpan.textContent = '';
+        }
+    }
+    updateTimer();
+    resendBtn.addEventListener('click', function() {
+        if (!this.disabled) {
+            // AJAX call to generate new OTP
+            const icNumber = document.querySelector('input[name="ICNumber"]').value;
+            fetch(`/Registration/ResendOtp?icNumber=${encodeURIComponent(icNumber)}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update the test OTP display if present
+                    const alertDiv = document.querySelector('.alert-info');
+                    if (alertDiv && data.otp) {
+                        alertDiv.innerHTML = `<strong>Test OTP:</strong> ${data.otp}`;
+                    }
+                });
+            this.disabled = true;
+            this.style.color = '#bdbdbd';
+            timer = 11;
+            updateTimer();
+        }
+    });
+
+    // On submit, combine OTP fields into one hidden input
+    document.getElementById('otpForm').addEventListener('submit', function(e) {
+        const otp = Array.from(otpInputs).map(i => i.value).join('');
+        let otpHidden = document.createElement('input');
+        otpHidden.type = 'hidden';
+        otpHidden.name = 'Otp';
+        otpHidden.value = otp;
+        this.appendChild(otpHidden);
+     });
+</script>
+
+<style>
+    .otp-input {
+        width: 48px;
+        height: 48px;
+        text-align: center;
+        font-size: 2rem;
+        border: none;
+        border-bottom: 2px solid #e5e5e5;
+        background: transparent;
+        outline: none;
+        margin: 0 4px;
+        border-radius: 0;
+        color: #222;
+    }
+
+        .otp-input:focus {
+            border-bottom: 2px solid #b14fc2;
+        }
+
+    .verify-btn {
+        background: #e5e1e7;
+        color: #bdbdbd;
+        font-weight: 600;
+        font-size: 1.1rem;
+        border-radius: 12px;
+        padding: 16px 0;
+        border: none;
+        letter-spacing: 1px;
+        margin-bottom: 2rem;
+        transition: background 0.2s, color 0.2s;
+    }
+
+        .verify-btn:active, .verify-btn:focus {
+            background: #b14fc2;
+            color: #fff;
+        }
+
+    @@media (max-width: 430px) {
+        .container {
+            max-width: 100vw !important;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .verify-btn {
+            max-width: 100vw;
+        }
+    }
+</style>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} 

@@ -1,0 +1,24 @@
+@model CodebaseAssessmentTask.Models.RegistrationStartViewModel
+@{
+    ViewData["Title"] = "Login or Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5" style="max-width: 400px;">
+    <div class="text-center mb-4">
+        <h2>Welcome to Koperasi Tentera</h2>
+    </div>
+    <form asp-action="Start" method="post">
+        <div class="form-group mb-3">
+            <label for="ICNumber" class="form-label">IC NUMBER</label>
+            <input type="text" class="form-control" id="ICNumber" name="ICNumber" placeholder="Please enter IC number" required />
+        </div>
+        <button type="submit" class="btn btn-primary w-100">LOGIN</button>
+    </form>
+    <div class="text-center mt-3">
+        <span>New to Koperasi Tentera? </span>
+        <a href="/Registration/AccountCreationInstruction">Register now</a>
+    </div>
+</div>
+
+<!-- Add your content here --> 

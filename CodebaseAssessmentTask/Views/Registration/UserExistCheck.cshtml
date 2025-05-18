@@ -1,0 +1,80 @@
+@model CodebaseAssessmentTask.Models.RegistrationCreateAccountViewModel
+@{
+    ViewData["Title"] = "Account Already Exist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container position-relative" style="max-width: 430px; min-height: 100vh; padding-bottom: 120px;">
+    
+    @* "Account already exist" message block *@
+    <div style="background: #fff3f2; border-radius: 16px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <span style="color: #ff4d4f; font-size: 1.5rem; margin-top: 2px;">
+            <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' viewBox='0 0 24 24'><circle cx='12' cy='12' r='10' fill='#fff3f2'/><path fill='#ff4d4f' d='M12 7a1 1 0 0 1 1 1v4a1 1 0 1 1-2 0V8a1 1 0 0 1 1-1Zm0 8a1.25 1.25 0 1 0 0-2.5A1.25 1.25 0 0 0 12 15Z'/></svg>
+        </span>
+        <div style="flex: 1;">
+            <div style="font-weight: 600; color: #ff4d4f;">Account already exist</div>
+            <div style="color: #b23c3c; font-size: 1rem;">There is account registered with the IC number. Please login to continue.</div>
+        </div>
+        <button type="button" onclick="this.parentElement.style.display='none'" style="background: none; border: none; font-size: 1.2rem; color: #b23c3c; cursor: pointer;">&times;</button>
+    </div>
+
+    <div class="pt-4 px-2">
+         <h4 style="font-weight: 500; color: #444; margin-top: 1rem; margin-bottom: 2rem;">Hello! Let's get your account set</h4>
+
+         @* Display existing user data *@
+         <div class="mb-4">
+            <label class="form-label" style="font-size: 0.85rem; font-weight: 600; color: #888; letter-spacing: 1px;">CUSTOMER NAME</label>
+            <div style="font-size: 1.1rem; color: #222; border-bottom: 1px solid #e5e5e5; padding-bottom: 8px;">@Model.CustomerName</div>
+         </div>
+         <div class="mb-4">
+            <label class="form-label" style="font-size: 0.85rem; font-weight: 600; color: #888; letter-spacing: 1px;">IC NUMBER</label>
+            <div style="font-size: 1.1rem; color: #222; border-bottom: 1px solid #e5e5e5; padding-bottom: 8px;">@Model.ICNumber</div>
+         </div>
+         <div class="mb-4">
+            <label class="form-label" style="font-size: 0.85rem; font-weight: 600; color: #888; letter-spacing: 1px;">MOBILE NUMBER</label>
+             <div style="font-size: 1.1rem; color: #222; border-bottom: 1px solid #e5e5e5; padding-bottom: 8px;">@Model.MobileNumber</div>
+         </div>
+         <div class="mb-5">
+            <label class="form-label" style="font-size: 0.85rem; font-weight: 600; color: #888; letter-spacing: 1px;">EMAIL ADDRESS</label>
+            <div style="font-size: 1.1rem; color: #222; border-bottom: 1px solid #e5e5e5; padding-bottom: 8px;">@Model.EmailAddress</div>
+         </div>
+
+        <form asp-action="HandleUserExistChoice" method="post">
+             @* Pass ICNumber in hidden field so controller knows which user *@
+             <input type="hidden" name="icNumber" value="@Model.ICNumber" />
+            <div class="d-flex justify-content-around gap-3">
+                 <button type="submit" class="btn btn-outline-secondary w-100" name="choice" value="retry" style="border-radius: 12px; padding: 16px 0; font-weight: 600;">RETRY</button>
+                 <button type="submit" class="btn btn-primary w-100" name="choice" value="login" style="background: #b14fc2; color: #fff; border-radius: 12px; padding: 16px 0; font-weight: 600; border: none;">LOGIN</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<style>
+    .btn-primary:active, .btn-primary:focus {
+        background: #a03eb0 !important;
+        color: #fff !important;
+        border-color: #a03eb0 !important;
+    }
+    .btn-outline-secondary {
+        color: #888;
+        border-color: #e5e5e5;
+    }
+     .btn-outline-secondary:hover {
+        color: #666;
+        border-color: #ccc;
+    }
+     .btn-outline-secondary:active, .btn-outline-secondary:focus {
+        color: #666 !important;
+        border-color: #ccc !important;
+        box-shadow: none;
+    }
+
+    @@media (max-width: 430px) {
+        .container {
+            max-width: 100vw !important;
+            padding-left: 0;}
+        }
+    }
+</style> 
